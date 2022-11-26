@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 from os.path import join
-from os import listdir
+from os import listdir, environ
 from collections import deque
 from contextlib import contextmanager
 from subprocess import run
@@ -90,6 +90,7 @@ def modprobe(module, enable):
         run(["modprobe", "-r", module])
 
 def main():
+    print("PATH:", environ.get('PATH', ""))
     try:
         for mode in gen_sw_tablet_mode():
             print("Tablet mode", ["off","on"][mode])

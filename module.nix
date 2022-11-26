@@ -24,7 +24,6 @@ in
       serviceConfig = {
         ExecStart = "${pkg}/bin/unhinged.py";
       };
-      path = [ pkg ];
     };
   };
 
