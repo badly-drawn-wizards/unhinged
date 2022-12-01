@@ -4,5 +4,5 @@ from distutils.core import setup
 setup(
     name='unhinged',
     version='0.0.1',
-    scripts=['unhinged.py']
+    scripts=['src/unhinged.py']
 )
