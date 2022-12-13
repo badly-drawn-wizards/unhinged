@@ -7,7 +7,7 @@ from contextlib import contextmanager
 from futil import fset
 from os.path import join
 from pyquaternion import Quaternion
-from math import pi
+from math import pi, asin
 
 def hist_states(
         vals,
@@ -18,14 +18,18 @@ def hist_states(
     side = False
     for val in vals:
         [[_, [hinge]], [_, q_rot]] = val
-        _, pitch, _ = Quaternion(q_rot).yaw_pitch_roll
+        q = Quaternion(q_rot).unit
+
+        # Absolute hack, maybe one day I'll invest in learning enough of quaternions
+        # to do this properly
+        ang = asin(q.rotate([1,0,0])[2])
         if hinge <= hist_hinge_lte:
             tablet = False
         if hinge >= hist_hinge_gte:
             tablet = True
-        if abs(pitch) <= hist_pitch_lte:
+        if abs(ang) <= hist_pitch_lte:
             side = False
-        if abs(pitch) >= hist_pitch_gte:
+        if abs(ang) >= hist_pitch_gte:
             side = True
         mode = (tablet, side)
         if mode != last_mode:
@@ -67,8 +71,8 @@ def run_service():
             for tablet, side in hist_states(vals, 160, 200, pi/4, pi/4):
                 hdsm = not side or tablet
                 print(f"HDSM: {hdsm}, Tablet: {tablet}, Side: {side}")
-                int33d5_hdsm(hdsm)
-                inhibit_dev(input_dev, tablet)
+                # int33d5_hdsm(hdsm)
+                # inhibit_dev(input_dev, tablet)
     finally:
         inhibit_dev(input_dev, False)
 
