@@ -2,8 +2,9 @@
   inputs.utils.url = "github:numtide/flake-utils";
   outputs = { nixpkgs, utils, ... }:
     let
+      pkg = ./default.nix;
       overlay = (self: super: {
-        unhinged = self.callPackage ./default.nix {};
+        unhinged = self.callPackage pkg {};
       });
       module = ({...}: {
         imports = [ ./module.nix ];
@@ -15,9 +16,16 @@
     } // utils.lib.eachDefaultSystem (system:
       let
         pkgs = import nixpkgs { inherit system; overlays = [overlay]; };
+        inherit (pkgs) unhinged;
       in {
         packages = {
-          unhinged = pkgs.unhinged;
+          inherit unhinged;
+        };
+        devShell = pkgs.mkShell {
+          packages = [
+            (pkgs.python3.withPackages
+              (ps: (ps.callPackage pkg {}).buildInputs))
+          ];
         };
         defaultPackage = pkgs.unhinged;
       }

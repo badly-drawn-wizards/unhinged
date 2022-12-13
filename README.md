@@ -7,8 +7,7 @@ In these models the keyboard is disabled based on whether the device is reported
 in tablet mode. This is reported by a flag (CVTS) in the PNP0C09 embedded
 controller, which independently disables the input devices. This can be
 disabled by making the acpi call `HDSM 0` on the device to undo `intel-hid`'s
-damage while still enabling it to report power key events. We make this acpi
-call using the `acpi_call` kernel module
+damage. We make this acpi call using the `acpi_call` kernel module
 
 Re-introducing a software keyboard inhibiting for tablet mode require reading
 the iio hinge sensors and setting the input device's inhibit flag when in tablet
