@@ -5,6 +5,5 @@ python3Packages.buildPythonPackage {
   version = "0.0.1";
   src = ./.;
 
-  buildInputs = with python3Packages; [pyquaternion];
-  propagatedBuildInputs = [ kmod ];
+  propagatedBuildInputs = [ kmod python3Packages.pyquaternion ];
 }
