@@ -71,8 +71,8 @@ def run_service():
             for tablet, side in hist_states(vals, 160, 200, pi/4, pi/4):
                 hdsm = not side or tablet
                 print(f"HDSM: {hdsm}, Tablet: {tablet}, Side: {side}")
-                # int33d5_hdsm(hdsm)
-                # inhibit_dev(input_dev, tablet)
+                int33d5_hdsm(hdsm)
+                inhibit_dev(input_dev, tablet)
     finally:
         inhibit_dev(input_dev, False)
 

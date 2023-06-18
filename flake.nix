@@ -24,7 +24,7 @@
         devShell = pkgs.mkShell {
           packages = [
             (pkgs.python3.withPackages
-              (ps: (ps.callPackage pkg {}).buildInputs))
+              (ps: (ps.callPackage pkg {}).propagatedBuildInputs))
           ];
         };
         defaultPackage = pkgs.unhinged;
